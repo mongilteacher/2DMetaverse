@@ -9,8 +9,9 @@ public class ArticleManager : MonoBehaviour
 {
     // 게시글 리스트
     private List<Article> _articles = new List<Article>();
+    public List<Article> Articles => _articles;
     
-    public static ArticleManager Instance;
+    public static ArticleManager Instance { get; private set; }
     private void Awake()
     {
         Instance = this;
