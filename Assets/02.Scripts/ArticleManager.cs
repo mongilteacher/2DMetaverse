@@ -14,6 +14,7 @@ public class ArticleManager : MonoBehaviour
     public static ArticleManager Instance { get; private set; }
     private void Awake()
     {
+        
         Instance = this;
         
         _articles.Add(new Article()
