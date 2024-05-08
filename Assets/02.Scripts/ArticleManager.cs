@@ -18,7 +18,7 @@ public class ArticleManager : MonoBehaviour
     {
         Instance = this;
         
-        /*_articles.Add(new Article()
+        _articles.Add(new Article()
         {
             Name = "김홍일",
             Content = "안녕하세요.",
@@ -74,7 +74,7 @@ public class ArticleManager : MonoBehaviour
             ArticleType = ArticleType.Normal,
             Like = 20,
             WriteTime = DateTime.Now
-        });*/
+        });
         
         // JSON이란 자바스크립트 객체 표기법으로 요즘 가장 많이 사용하는
         //         데이터 텍스트 구조
@@ -86,19 +86,19 @@ public class ArticleManager : MonoBehaviour
         Debug.Log(Application.persistentDataPath);
         string path = Application.persistentDataPath;
         
-        // 1. 객체를 Json포맷의 텍스르로 변환한 다음 파일 'data.txt'에 저장한다.
+        // 1. 객체를 Json포맷의 텍스트로 변환한 다음 파일 'data.txt'에 저장한다.
         // json은 일반 클래스는 직렬화할 수 있지만 리스트 그 자체는 직렬화를 못한다.
         // 일반 클래스로 리스트를 덮어 씌운다.
-        /*ArticleData articleData = new ArticleData(_articles);
+        ArticleData articleData = new ArticleData(_articles);
         string jsonData = JsonUtility.ToJson(articleData);
         Debug.Log(jsonData);
-        StreamWriter sw = File.CreateText($"{path}/data.txt");
+        StreamWriter sw = File.CreateText($"{path}/data.json");
         sw.Write(jsonData);
-        sw.Close();*/
+        sw.Close();
 
         // 2. 데이터를 하드코딩한 코드를 지운다.
         // 3. 'data.txt'로부터 json을 읽어와서 객체들을 초기화한다.
-        string txt = File.ReadAllText($"{path}/data.txt");
+        string txt = File.ReadAllText($"{path}/data.json");
         _articles = JsonUtility.FromJson<ArticleData>(txt).Data;
     }
 }
