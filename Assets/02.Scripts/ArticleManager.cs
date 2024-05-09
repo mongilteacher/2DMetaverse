@@ -16,7 +16,7 @@ public class ArticleManager : MonoBehaviour
     public List<Article> Articles => _articles;
 
     // 콜렉션
-    private IMongoCollection<BsonDocument> _articleCollection;
+    private IMongoCollection<Article> _articleCollection;
     
     public static ArticleManager Instance { get; private set; }
     private void Awake()
@@ -36,7 +36,7 @@ public class ArticleManager : MonoBehaviour
         // 2. 특정 데이터베이스 연결
         IMongoDatabase db = mongoClient.GetDatabase("metaverse");
         // 3. 특정 콜렉션 연결
-        _articleCollection = db.GetCollection<BsonDocument>("articles");
+        _articleCollection = db.GetCollection<Article>("articles");
     }
 
     public void FindAll()
@@ -49,9 +49,9 @@ public class ArticleManager : MonoBehaviour
         sort["WriteTime"] = -1;    
         // +1 -> 오름차순 정렬 -> 낮은 값에서 높은 값으로 정렬한다.
         // -1 -> 내림차순 정렬 -> 높은 값에서 낮은 값으로 정렬한다.
-        var dataList =  _articleCollection.Find(new BsonDocument()).Sort(sort).ToList();
+        _articles =  _articleCollection.Find(new BsonDocument()).Sort(sort).ToList();
         // 5. 읽어온 문서 만큼 New Article()해서 데이터 채우고 
-        _articles.Clear();
+        /*_articles.Clear();
         foreach (var data in dataList)
         {
             Article article = new Article();
@@ -62,26 +62,13 @@ public class ArticleManager : MonoBehaviour
             article.WriteTime   = DateTime.Parse(data["WriteTime"].ToString());
             //    _articles에 넣기
             _articles.Add(article);
-        }
+        }*/
     }
 
     public void FindNotice()
     {
         // 4. 공지 문서 읽어오기
-        var dataList =  _articleCollection.Find(data => data["ArticleType"] == (int)ArticleType.Notice).ToList();
-        // 5. 읽어온 문서 만큼 New Article()해서 데이터 채우고 
-        _articles.Clear();
-        foreach (var data in dataList)
-        {
-            Article article = new Article();
-            article.Name        = data["Name"].ToString();
-            article.Content     = data["Content"].ToString();
-            article.Like        = (int)data["Like"];
-            article.ArticleType = (ArticleType)(int)data["ArticleType"];
-            article.WriteTime   = DateTime.Parse(data["WriteTime"].ToString());
-            //    _articles에 넣기
-            _articles.Add(article);
-        }
+        _articles =  _articleCollection.Find(data => (int)data.ArticleType == (int)ArticleType.Notice).ToList();
     }
     
     
