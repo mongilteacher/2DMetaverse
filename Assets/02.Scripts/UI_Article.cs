@@ -27,19 +27,19 @@ public class UI_Article : MonoBehaviour
         }
         else if (timeSpan.TotalHours < 1) // 1시간 이내 -> n분 전
         {
-            return $"{timeSpan.TotalMinutes}분 전";
+            return $"{timeSpan.TotalMinutes:N0}분 전";
         }
         else if (timeSpan.TotalDays < 1)  // 하루 이내 -> n시간 전
         {
-            return $"{timeSpan.TotalHours}시간 전";
+            return $"{timeSpan.TotalHours:N0}시간 전";
         }
         else if (timeSpan.TotalDays < 7) // 7일 이내 -> n일 전
         {
-            return $"{timeSpan.TotalDays}일 전";
+            return $"{timeSpan.TotalDays:N0}일 전";
         }
         else if (timeSpan.TotalDays < 7 * 4) // 4주 이내 -> n주 전
         {
-            return $"{timeSpan.TotalDays / 7}주 전";
+            return $"{timeSpan.TotalDays / 7:N0}주 전";
         }
 
         return dateTime.ToString("yyyy년 M월 d일");
