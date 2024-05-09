@@ -42,7 +42,14 @@ public class ArticleManager : MonoBehaviour
     public void FindAll()
     {
         // 4. 모든 문서 읽어오기
-        var dataList =  _articleCollection.Find(new BsonDocument()).ToList();
+        // 4.1 WriteTime을 기준으로 '정렬'
+        // Sort 메서드를 이용해서 도큐먼트를 정렬할 수 있다.
+        // 매개변수로는 어떤 Key로 정렬할 것인지 알려주는 BsonDocument를 전달해주면 된다.
+        var sort = new BsonDocument();
+        sort["WriteTime"] = -1;    
+        // +1 -> 오름차순 정렬 -> 낮은 값에서 높은 값으로 정렬한다.
+        // -1 -> 내림차순 정렬 -> 높은 값에서 낮은 값으로 정렬한다.
+        var dataList =  _articleCollection.Find(new BsonDocument()).Sort(sort).ToList();
         // 5. 읽어온 문서 만큼 New Article()해서 데이터 채우고 
         _articles.Clear();
         foreach (var data in dataList)
