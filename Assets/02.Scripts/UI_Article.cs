@@ -20,7 +20,29 @@ public class UI_Article : MonoBehaviour
 
     private string GetTimeString(DateTime dateTime)
     {
-        return "방금전";
+        TimeSpan timeSpan = DateTime.Now - dateTime;
+        if (timeSpan.TotalMinutes < 1)     // 1분 이내 -> 방금 전
+        {
+            return "방금 전";
+        }
+        else if (timeSpan.TotalHours < 1) // 1시간 이내 -> n분 전
+        {
+            return $"{timeSpan.TotalMinutes}분 전";
+        }
+        else if (timeSpan.TotalDays < 1)  // 하루 이내 -> n시간 전
+        {
+            return $"{timeSpan.TotalHours}시간 전";
+        }
+        else if (timeSpan.TotalDays < 7) // 7일 이내 -> n일 전
+        {
+            return $"{timeSpan.TotalDays}일 전";
+        }
+        else if (timeSpan.TotalDays < 7 * 4) // 4주 이내 -> n주 전
+        {
+            return $"{timeSpan.TotalDays / 7}주 전";
+        }
+
+        return dateTime.ToString("yyyy년 M월 d일");
     }
     
 }
