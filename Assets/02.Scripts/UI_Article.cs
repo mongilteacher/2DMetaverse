@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 // Article 데이터를 보여주는 게임 오브젝트
@@ -14,6 +15,12 @@ public class UI_Article : MonoBehaviour
         NameTextUI.text    = article.Name;
         ContentTextUI.text = article.Content;
         LikeTextUI.text    = $"{article.Like}";
-        WriteTimeUI.text   = $"{article.WriteTime}";
+        WriteTimeUI.text   = GetTimeString(article.WriteTime);
     }
+
+    private string GetTimeString(DateTime dateTime)
+    {
+        return "방금전";
+    }
+    
 }
