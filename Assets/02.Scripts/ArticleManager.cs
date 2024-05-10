@@ -50,19 +50,6 @@ public class ArticleManager : MonoBehaviour
         // +1 -> 오름차순 정렬 -> 낮은 값에서 높은 값으로 정렬한다.
         // -1 -> 내림차순 정렬 -> 높은 값에서 낮은 값으로 정렬한다.
         _articles =  _articleCollection.Find(new BsonDocument()).Sort(sort).ToList();
-        // 5. 읽어온 문서 만큼 New Article()해서 데이터 채우고 
-        /*_articles.Clear();
-        foreach (var data in dataList)
-        {
-            Article article = new Article();
-            article.Name        = data["Name"].ToString();
-            article.Content     = data["Content"].ToString();
-            article.Like        = (int)data["Like"];
-            article.ArticleType = (ArticleType)(int)data["ArticleType"];
-            article.WriteTime   = DateTime.Parse(data["WriteTime"].ToString());
-            //    _articles에 넣기
-            _articles.Add(article);
-        }*/
     }
 
     public void FindNotice()
@@ -70,7 +57,20 @@ public class ArticleManager : MonoBehaviour
         // 4. 공지 문서 읽어오기
         _articles =  _articleCollection.Find(data => (int)data.ArticleType == (int)ArticleType.Notice).ToList();
     }
-    
+
+    public void Write(ArticleType articleType, string content)
+    {
+        Article article = new Article()
+        {
+            ArticleType =  articleType,
+            Name = "공지수",
+            Content =  content,
+            Like = 0,
+            WriteTime = DateTime.Now
+        };
+        
+        _articleCollection.InsertOne(article);
+    }
     
     
     
