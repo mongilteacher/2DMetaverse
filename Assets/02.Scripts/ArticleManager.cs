@@ -71,8 +71,14 @@ public class ArticleManager : MonoBehaviour
         
         _articleCollection.InsertOne(article);
     }
-    
-    
+
+
+    public void Delete(ObjectId id)
+    {
+        //var filter = Builders<Article>.Filter.Eq("_id", id);
+        //_articleCollection.DeleteOne(filter);
+        _articleCollection.DeleteOne(d => d.Id == id);
+    }
     
     
     

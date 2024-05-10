@@ -6,9 +6,17 @@ using UnityEngine;
 // UI_Article 관리
 public class UI_ArticleList : MonoBehaviour
 {
+    public static UI_ArticleList Instance { get; private set; }
+    
     public List<UI_Article> UIArticles;
     public GameObject EmptyObject;
     public UI_ArticleWrite ArticleWRiteUI;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+    
     
     private void Start()
     {

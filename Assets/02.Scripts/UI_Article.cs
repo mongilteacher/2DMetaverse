@@ -9,9 +9,15 @@ public class UI_Article : MonoBehaviour
     public Text  ContentTextUI;    // 글 내용
     public Text  LikeTextUI;       // 좋아요 개수
     public Text  WriteTimeUI;      // 글 쓴 날짜/시간
+
+    public UI_ArticleMenu MenuUI;
+
+    private Article _article;
     
-    public void Init(Article article)
+    public void Init(in Article article)
     {
+        _article = article;
+        
         NameTextUI.text    = article.Name;
         ContentTextUI.text = article.Content;
         LikeTextUI.text    = $"{article.Like}";
@@ -44,5 +50,25 @@ public class UI_Article : MonoBehaviour
 
         return dateTime.ToString("yyyy년 M월 d일");
     }
+
+
+    public void OnClickMenuButton()
+    {
+        MenuUI.Show(_article);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 }
