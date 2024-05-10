@@ -1,4 +1,5 @@
 using System;
+using MongoDB.Driver;
 using UnityEngine;
 using UnityEngine.UI;
 // Article 데이터를 보여주는 게임 오브젝트
@@ -20,7 +21,7 @@ public class UI_Article : MonoBehaviour
         
         NameTextUI.text    = article.Name;
         ContentTextUI.text = article.Content;
-        LikeTextUI.text    = $"{article.Like}";
+        LikeTextUI.text    = $"좋아요 {article.Like}";
         WriteTimeUI.text   = GetTimeString(article.WriteTime.ToLocalTime());
     }
 

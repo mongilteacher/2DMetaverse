@@ -14,7 +14,8 @@ public class UI_ArticleMenu : MonoBehaviour
     
     public void OnClickModifyButton()
     {
-        Debug.Log("수정하기 버튼");
+        UI_ArticleModify.Instance.Show(_article);
+        gameObject.SetActive(false);
     }
 
     public void OnClickBackground()

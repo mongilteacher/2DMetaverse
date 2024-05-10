@@ -79,7 +79,12 @@ public class ArticleManager : MonoBehaviour
         //_articleCollection.DeleteOne(filter);
         _articleCollection.DeleteOne(d => d.Id == id);
     }
-    
+
+
+    public void Replace(Article article)
+    {
+        _articleCollection.ReplaceOne(d => d.Id == article.Id, article);
+    }
     
     
     
