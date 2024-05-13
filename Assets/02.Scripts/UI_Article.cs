@@ -1,15 +1,24 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using MongoDB.Driver;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
+
 // Article 데이터를 보여주는 게임 오브젝트
 public class UI_Article : MonoBehaviour
 {
-    public Image ProfileImageUI;   // 프로필 이미지
-    public Text  NameTextUI;       // 글쓴이
-    public Text  ContentTextUI;    // 글 내용
-    public Text  LikeTextUI;       // 좋아요 개수
-    public Text  WriteTimeUI;      // 글 쓴 날짜/시간
+    private static Dictionary<string, Texture> _cache = new Dictionary<string, Texture>();
+    
+    
+    public RawImage ProfileImageUI; // 프로필 이미지
+    public Text  NameTextUI;        // 글쓴이
+    public Text  ContentTextUI;     // 글 내용
+    public Text  LikeTextUI;        // 좋아요 개수
+    public Text  WriteTimeUI;       // 글 쓴 날짜/시간
 
     public UI_ArticleMenu MenuUI;
 
@@ -23,6 +32,8 @@ public class UI_Article : MonoBehaviour
         ContentTextUI.text = article.Content;
         LikeTextUI.text    = $"좋아요 {article.Like}";
         WriteTimeUI.text   = GetTimeString(article.WriteTime.ToLocalTime());
+        
+        StartCoroutine(GetTexture(_article.Profile));
     }
 
     private string GetTimeString(DateTime dateTime)
@@ -66,9 +77,48 @@ public class UI_Article : MonoBehaviour
         ArticleManager.Instance.FindAll();
         UI_ArticleList.Instance.Refresh();
     }
-    
-    
-    
+    private IEnumerator GetTexture(string url) 
+    {
+        // 캐쉬된게 있을 때 -> 캐시 히트(적중)
+        if (_cache.ContainsKey(url))
+        {
+            var now = DateTime.Now;
+            
+            ProfileImageUI.texture = _cache[url];
+            
+            var span = DateTime.Now - now;
+            Debug.Log($"캐시 히트!: {span.TotalMilliseconds}");
+            
+            yield break;
+        }
+        
+        
+        // Http 주문을 위해 주w문서(Request)를 만든다.
+        // -> 주문서 내용: URL로부터 텍스처(이미지)를 다운로드하기 위한 GET Request 요청
+        UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
+
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        
+        yield return www.SendWebRequest(); // 비동기
+
+        if(www.isNetworkError || www.isHttpError) 
+        {
+            Debug.Log(www.error);
+        }
+        else 
+        {
+
+            Texture myTexture = ((DownloadHandlerTexture)www.downloadHandler).texture;
+            ProfileImageUI.texture = myTexture;
+            
+            stopwatch.Stop();
+            Debug.Log($"캐시 미스!: {stopwatch.ElapsedTicks}"); // 나노세컨즈
+            
+            // 캐싱
+            _cache[url] = myTexture;
+        }
+    }
     
     
     
