@@ -72,4 +72,9 @@ public class UI_ArticleList : MonoBehaviour
         gameObject.SetActive(false);
         ArticleWRiteUI.gameObject.SetActive(true);
     }
+
+    public void OnClickMapButton()
+    {
+        
+    }
 }
